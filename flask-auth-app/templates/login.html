@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Log in · Harbor{% endblock %}
+{% block body %}
+<main class="auth">
+  <section class="auth-card">
+    <h1 class="brand">Harbor</h1>
+    <h2>Log in to your account</h2>
+    {% include "_flash.html" %}
+    <form method="post" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" value="{{ email or '' }}" required autofocus>
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+      <label class="check"><input type="checkbox" name="remember"> Keep me logged in</label>
+
+      <button type="submit" class="btn primary">Log in</button>
+    </form>
+    <p class="alt">New here? <a href="{{ url_for('signup') }}">Create an account</a></p>
+  </section>
+</main>
+{% endblock %}

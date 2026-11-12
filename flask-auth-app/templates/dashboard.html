@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Harbor{% endblock %}
+{% block body %}
+<header class="topbar">
+  <span class="brand">Harbor</span>
+  <div class="who">
+    <span>{{ current_user.name }}</span>
+    <form action="{{ url_for('logout') }}" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn ghost">Log out</button>
+    </form>
+  </div>
+</header>
+
+<main class="dash">
+  <h1>Hello, {{ current_user.name.split()[0] }}</h1>
+  {% include "_flash.html" %}
+
+  <section class="stats">
+    <div class="stat"><strong>{{ notes|length }}</strong><span>Notes saved</span></div>
+    <div class="stat"><strong>{{ current_user.created_at.strftime('%d %b %Y') }}</strong><span>Member since</span></div>
+    <div class="stat"><strong class="email">{{ current_user.email }}</strong><span>Signed in as</span></div>
+  </section>
+
+  <section class="panel">
+    <h2>Add a note</h2>
+    <form action="{{ url_for('add_note') }}" method="post" class="note-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input name="body" type="text" maxlength="500" placeholder="What do you want to remember?" required>
+      <button type="submit" class="btn primary">Save note</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Your notes</h2>
+    {% if notes %}
+      <ul class="notes">
+        {% for n in notes %}
+        <li>
+          <div>
+            <p>{{ n.body }}</p>
+            <time>{{ n.created_at.strftime('%d %b %Y, %H:%M') }} UTC</time>
+          </div>
+          <form action="{{ url_for('delete_note', note_id=n.id) }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn ghost small">Delete</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">No notes yet. Add your first one above.</p>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}
