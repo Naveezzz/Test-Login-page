@@ -5,7 +5,7 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'asia-south1-docker.pkg.dev/trainee-sandbox/flask-app-repo/flask-auth-app:$SHORT_SHA'
+      - 'asia-south1-docker.pkg.dev/trainee-sandbox/flask-app-repo/flask-auth-app:$BUILD_ID'
       - '-f'
       - 'flask-auth-app/Dockerfile'
       - 'flask-auth-app'
@@ -14,7 +14,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'asia-south1-docker.pkg.dev/trainee-sandbox/flask-app-repo/flask-auth-app:$SHORT_SHA'
+      - 'asia-south1-docker.pkg.dev/trainee-sandbox/flask-app-repo/flask-auth-app:$BUILD_ID'
 
   # Step 3: Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -24,7 +24,7 @@ steps:
       - 'deploy'
       - 'flask-auth-service'
       - '--image'
-      - 'asia-south1-docker.pkg.dev/trainee-sandbox/flask-app-repo/flask-auth-app:$SHORT_SHA'
+      - 'asia-south1-docker.pkg.dev/trainee-sandbox/flask-app-repo/flask-auth-app:$BUILD_ID'
       - '--region'
       - 'asia-south1'
       - '--platform'
@@ -35,7 +35,7 @@ steps:
       - '--allow-unauthenticated'
 
 images:
-  - 'asia-south1-docker.pkg.dev/trainee-sandbox/flask-app-repo/flask-auth-app:$SHORT_SHA'
+  - 'asia-south1-docker.pkg.dev/trainee-sandbox/flask-app-repo/flask-auth-app:$BUILD_ID'
 
 options:
   logging: CLOUD_LOGGING_ONLY
